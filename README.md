@@ -4,7 +4,7 @@ example & exercises
 
 main material from [oracle](https://docs.oracle.com/javase/tutorial) (pure english)
 
-extensive material [On java8](https://usigned.github.io/OnJava8/) (Chinese Edition)
+reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Edition)
 
 ### Object-Oriented Programming Concept
     
