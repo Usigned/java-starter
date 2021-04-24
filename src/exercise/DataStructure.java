@@ -31,7 +31,7 @@ public class DataStructure {
 
         @Override
         public Integer next() {
-            Integer ret = Integer.valueOf(arrayOfInts[nextIndex]);
+            Integer ret = arrayOfInts[nextIndex];
             nextIndex += 2;
             return ret;
         }
