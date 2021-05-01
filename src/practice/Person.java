@@ -1,4 +1,4 @@
-package exercise;
+package practice;
 
 import java.time.LocalDate;
 import java.time.chrono.IsoChronology;

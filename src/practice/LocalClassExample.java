@@ -1,4 +1,4 @@
-package exercise;
+package practice;
 
 public class LocalClassExample {
     static String regularExp = "[^0-9]";
