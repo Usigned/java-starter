@@ -1,6 +1,6 @@
 package practice;
 
-class DataStructure {
+public class DataStructure {
 
     private final static int SIZE = 15;
     private int[] arrayOfInts = new int[SIZE];

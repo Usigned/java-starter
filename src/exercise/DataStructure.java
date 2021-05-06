@@ -1,6 +1,6 @@
 package exercise;
 
-class DataStructure {
+public class DataStructure {
 
     // Create an array
     private final static int SIZE = 15;
