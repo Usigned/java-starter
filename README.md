@@ -146,3 +146,10 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
         Managing Source and Class Files
         Summary of Creating and Using Packages
         Questions and Exercises: Creating and Using Packages
+
+### Logs
+    Date: 2021/5/8
+    current: Numbers and Strings
+---
+    Date: 2021/5/7
+    current: Interfaces and Inheritance

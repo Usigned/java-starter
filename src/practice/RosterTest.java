@@ -149,7 +149,7 @@ public class RosterTest {
 //                }
 //        );
         roster.stream().filter(p -> p.getGender() == Person.Sex.MALE && p.getAge() >= 10)
-                //.map(p -> p.getEmailAddress())
+                .map(p -> p.getEmailAddress())
                 .forEach(email -> System.out.println(email));
 
 
