@@ -56,7 +56,7 @@ a compile time error will occur.
 
 **Overriding and Hiding Methods**
 
-See code in [Animal.java](Animal.java)
+See code in [Animal.java](../src/Interface/Animal.java)
 
 The distinction between hiding a static method and overriding an instance method has important implications:
 

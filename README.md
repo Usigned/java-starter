@@ -148,6 +148,9 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
         Questions and Exercises: Creating and Using Packages
 
 ### Logs
+    Date: 2021/5/10
+    current: Strings
+---
     Date: 2021/5/8
     current: Numbers and Strings
 ---
