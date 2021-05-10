@@ -73,6 +73,7 @@ public class TreeNode {
 
     public static void main(String[] args) {
         TreeNode root1 = TreeNode.creatTreeNode(0,1,2,3);
-        // System.out.println(TreeNode.leafSimilar(root1, root2));
+        TreeNode root2 = TreeNode.creatTreeNode(0, 1,3,2);
+        System.out.println(TreeNode.leafSimilar(root1, root2));
     }
 }
