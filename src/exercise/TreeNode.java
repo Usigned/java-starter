@@ -16,6 +16,14 @@ public class TreeNode {
         this.right = right;
     }
 
+    static TreeNode creatTreeNode (int i, int ... vals) {
+        
+        if (i < vals.length) {
+            return new TreeNode(vals[i], creatTreeNode(2*i+1, vals), creatTreeNode(2*i+2, vals));
+        }
+        return null;
+    }
+
     static class Iter implements Iterator<TreeNode> {
         TreeNode root;
         Stack<TreeNode> stack;
@@ -64,10 +72,7 @@ public class TreeNode {
     }
 
     public static void main(String[] args) {
-        TreeNode _3 = new TreeNode(3, null, null);
-        TreeNode _2 = new TreeNode(2, null, null);
-        TreeNode root1 = new TreeNode(1, _2, _3);
-        TreeNode root2 = new TreeNode(1, _3, _2);
-        System.out.println(TreeNode.leafSimilar(root1, root2));
+        TreeNode root1 = TreeNode.creatTreeNode(0,1,2,3);
+        // System.out.println(TreeNode.leafSimilar(root1, root2));
     }
 }
