@@ -8,7 +8,19 @@ Why we need a **Number** object
 
 **Formatting Numeric Print Output**
 
-class _PrinStream_
+class _Print__Stream_
 
 usage: _System.out.format(...)_;
 
+## Strings
+**creating**
+```
+char[] chars = { 'h', 'e', 'l', 'l', 'o', '.' };
+String s = new String(chars);
+```
+Methods
+```
+((String)s).length();
+((String)s).charAt(index);
+((String)s).substring(startIndex, endIndex);
+```
