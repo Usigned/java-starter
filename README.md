@@ -6,8 +6,10 @@ main material from [oracle](https://docs.oracle.com/javase/tutorial) (pure engli
 
 reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Edition)
 
+## Learning the Java Language
+
 ### Object-Oriented Programming Concept
-    
+
     What Is an Object?
     What Is a Class?
     What Is Inheritance?
@@ -38,7 +40,7 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
         Summary of Control Flow Statements
     Questions and Exercises: Control Flow Statements
 ### Classes and Objects
-    
+
     Classes
         Declaring Classes
         Declaring Member Variables
@@ -114,7 +116,7 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
     Autoboxing and Unboxing
     Questions and Exercises: Characters and Strings
 ### Generics (Updated)
-    
+
     Why Use Generics?
     Generic Types
         Raw Types
@@ -147,7 +149,128 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
         Summary of Creating and Using Packages
         Questions and Exercises: Creating and Using Packages
 
-### Logs
+## Essential Java Classes
+
+### Exceptions
+    What Is an Exception?
+    The Catch or Specify Requirement
+    Catching and Handling Exceptions
+        The try Block
+        The catch Blocks
+        The finally Block
+    The try-with-resources Statement
+    Putting It All Together
+    Specifying the Exceptions Thrown by a Method
+    How to Throw Exceptions
+        Chained Exceptions
+        Creating Exception Classes
+    Unchecked Exceptions — The Controversy
+    Advantages of Exceptions
+    Summary
+    Questions and Exercises
+
+### Basic I/O
+    I/O Streams
+        Byte Streams
+        Character Streams
+        Buffered Streams
+        Scanning and Formatting
+            Scanning
+            Formatting
+        I/O from the Command Line
+        Data Streams
+        Object Streams
+    File I/O (Featuring NIO.2)
+        What Is a Path? (And Other File System Facts)
+        The Path Class
+            Path Operations
+        File Operations
+        Checking a File or Directory
+        Deleting a File or Directory
+        Copying a File or Directory
+        Moving a File or Directory
+        Managing Metadata (File and File Store Attributes)
+        Reading, Writing, and Creating Files
+        Random Access Files
+        Creating and Reading Directories
+        Links, Symbolic or Otherwise
+        Walking the File Tree
+        Finding Files
+        Watching a Directory for Changes
+        Other Useful Methods
+        Legacy File I/O Code
+    Summary
+    Questions and Exercises: Basic I/O
+
+## Concurrency
+    Processes and Threads
+    Thread Objects
+        Defining and Starting a Thread
+        Pausing Execution with Sleep
+        Interrupts
+        Joins
+        The SimpleThreads Example
+    Synchronization
+        Thread Interference
+        Memory Consistency Errors
+        Synchronized Methods
+        Intrinsic Locks and Synchronization
+        Atomic Access
+    Liveness
+        Deadlock
+        Starvation and Livelock
+    Guarded Blocks
+    Immutable Objects
+        A Synchronized Class Example
+        A Strategy for Defining Immutable Objects
+    High Level Concurrency Objects
+        Lock Objects
+        Executors
+            Executor Interfaces
+            Thread Pools
+        Fork/Join
+        Concurrent Collections
+        Atomic Variables
+        Concurrent Random Numbers
+    For Further Reading
+    Questions and Exercises: Concurrency
+
+### The Platform Environment
+    Configuration Utilities
+        Properties
+        Command-Line Arguments
+        Environment Variables
+        Other Configuration Utilities
+    System Utilities
+        Command-Line I/O Objects
+        System Properties
+        The Security Manager
+        Miscellaneous Methods in System
+    PATH and CLASSPATH
+    Questions and Exercises: The Platform Environment
+
+### Regular Expressions
+    Introduction
+    Test Harness
+    String Literals
+    Character Classes
+    Predefined Character Classes
+    Quantifiers
+    Capturing Groups
+    Boundary Matchers
+    Methods of the Pattern Class
+    Methods of the Matcher Class
+    Methods of the PatternSyntaxException Class
+    Unicode Support
+    Additional Resources
+    Questions and Exercises: Regular Expressions
+
+## Logs
+
+---
+    Date: 2021/5/12
+    current: Finish Learning the [Java Language](#Learning-the-Java-Language), next: Essential Java Classes
+---
     Date: 2021/5/12
     current: Finish Generics
 ---
