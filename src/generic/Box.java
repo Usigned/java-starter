@@ -14,6 +14,7 @@ public class Box <T> {
     public <U extends Number> void inspect(U u) {
         System.out.println(u.getClass().getName());
     }
+
     public static void main(String[] args) {
         Box<Integer> integerBox = new Box<>();
         integerBox.setT(10);
