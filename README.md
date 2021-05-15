@@ -268,6 +268,9 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
 ## Logs
 
 ---
+    Date: 2021/5/15
+    current: Finish Exception
+---
     Date: 2021/5/12
     current: Finish Learning the [Java Language](#Learning-the-Java-Language), next: Essential Java Classes
 ---
