@@ -1,7 +1,5 @@
 package nums;
 
-import java.text.DecimalFormat;
-
 public class PrintDemo {
 
     public static void main(String[] args) {

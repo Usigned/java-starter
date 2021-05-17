@@ -2,8 +2,8 @@ package nums;
 
 public class Read {
     public static void main(String[] args) {
-//        readIntegers(args);
-//        readFloats(args);
+        readIntegers(args);
+        readFloats(args);
         readInt(args);
     }
 

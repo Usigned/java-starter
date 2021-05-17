@@ -84,7 +84,7 @@ public class DataStructure {
         DataStructure ds = new DataStructure();
         //ds.printEven();
         System.out.println("DS Iterator");
-        DataStructureIterator iterator = ds.new EvenIterator();
+        // DataStructureIterator iterator = ds.new EvenIterator();
         System.out.println("Anonymous class");
         ds.print(new DataStructure.DataStructureIterator() {
             private int nextIndex = 1;

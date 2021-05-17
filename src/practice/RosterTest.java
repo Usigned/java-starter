@@ -94,7 +94,7 @@ public class RosterTest {
             List<Person> roster,
             Predicate<Person> tester,
             Function<Person, String> mapper,
-            Consumer block) {
+            Consumer<String> block) {
         for (Person person : roster)
             if (tester.test(person)) {
                 String data = mapper.apply(person);

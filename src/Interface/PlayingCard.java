@@ -1,7 +1,5 @@
 package Interface;
 
-import java.util.Objects;
-
 public class PlayingCard implements Card{
 
     private Rank rank;

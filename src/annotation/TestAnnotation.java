@@ -1,6 +1,5 @@
 package annotation;
 
-import java.lang.annotation.Inherited;
 
 @ClassPreamble(
         author = "LZQ",
@@ -12,7 +11,7 @@ public class TestAnnotation {
 
     @Deprecated
     public static void print() {
-        @NonNull String str;
+        // @NonNull String str;
         System.out.println("test deprecated annotation");
     }
 

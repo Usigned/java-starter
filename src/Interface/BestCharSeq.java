@@ -1,7 +1,5 @@
 package Interface;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class BestCharSeq implements java.lang.CharSequence {
 
