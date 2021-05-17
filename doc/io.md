@@ -147,3 +147,39 @@ two ways of interaction:
 
   use `Console` to write a program to change user's password, see [Password.java](../src/io/Password.java)
 
+## File  I/O 
+
+### The Path class
+
+- creating a path 
+
+  `Path path = Paths.get(URL);` 
+
+- retrieving information about a path
+
+  ```java
+  Path path = Paths.get(URL)
+  System.out.format("toString: %s%n", path.toString());
+  System.out.format("getFileName: %s%n", path.getFileName());
+  System.out.format("getName(0): %s%n", path.getName(0));
+  System.out.format("getNameCount: %d%n", path.getNameCount());
+  System.out.format("subpath(0,2): %s%n", path.subpath(0,2));
+  System.out.format("getParent: %s%n", path.getParent());
+  System.out.format("getRoot: %s%n", path.getRoot());
+  ```
+
+  output is Operating System dependent.
+
+- convert path 
+  - To a string that can be opened from a browser: `toUri`
+  - To absolute path: `toAbsolutePath`
+
+- joining two paths
+  - `resolve()`
+
+### File Operations
+
+- `Files` class offers a set of static method for file and directory operations.
+-  `Files` methods work on instance of `Path` objects.
+
+- all methods that access the file system can throw an `IOException`
