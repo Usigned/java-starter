@@ -123,4 +123,27 @@ Two levels of formatting are provided:
 
 - `print` and `println`
 - `format`
+  - `System.out.format("The square root of %d is %f.%n", i, r);`
+  - use `%n` instead of `\n`
+
+### I/O from the Command Line
+
+two ways of interaction:
+
+- Standard Streams - byte streams
+
+  read input from the keyboard and write output to the display
+
+  - Standard Input: `System.in`
+    - To use as a character stream: wrap in `InputStreamReader`
+  - Standard output: `System.out`
+  - Standard Error: `System.err`
+
+- console - character streams: `reader` and `writer` methods
+
+  - Useful for secure password entry: `readPassword` method
+
+  - To retrieve the Console object: `System.console()`
+
+  use `Console` to write a program to change user's password, see [Password.java](../src/io/Password.java)
 
