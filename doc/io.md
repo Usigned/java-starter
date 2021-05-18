@@ -126,7 +126,27 @@ Two levels of formatting are provided:
   - `System.out.format("The square root of %d is %f.%n", i, r);`
   - use `%n` instead of `\n`
 
-<<<<<<< HEAD
+### I/O from the Command Line
+
+two ways of interaction:
+
+- Standard Streams - byte streams
+
+  read input from the keyboard and write output to the display
+
+  - Standard Input: `System.in`
+    - To use as a character stream: wrap in `InputStreamReader`
+  - Standard output: `System.out`
+  - Standard Error: `System.err`
+
+- console - character streams: `reader` and `writer` methods
+
+  - Useful for secure password entry: `readPassword` method
+
+  - To retrieve the Console object: `System.console()`
+
+  use `Console` to write a program to change user's password, see [Password.java](../src/io/Password.java)
+
 ### Data Streams
 
 - binary I/O of  primitive data type values and String values.
@@ -179,30 +199,6 @@ Object ob2 = in.readObject();
 
   - resolving a link: substitute the actual location for soft link.
 
-=======
-### I/O from the Command Line
-
-two ways of interaction:
-
-- Standard Streams - byte streams
-
-  read input from the keyboard and write output to the display
-
-  - Standard Input: `System.in`
-    - To use as a character stream: wrap in `InputStreamReader`
-  - Standard output: `System.out`
-  - Standard Error: `System.err`
-
-- console - character streams: `reader` and `writer` methods
-
-  - Useful for secure password entry: `readPassword` method
-
-  - To retrieve the Console object: `System.console()`
-
-  use `Console` to write a program to change user's password, see [Password.java](../src/io/Password.java)
-
-## File  I/O 
-
 ### The Path class
 
 - creating a path 
@@ -237,4 +233,3 @@ two ways of interaction:
 -  `Files` methods work on instance of `Path` objects.
 
 - all methods that access the file system can throw an `IOException`
->>>>>>> bd8ebd4b5173a6667ce31e2df37ef7bc1ca6f7db
