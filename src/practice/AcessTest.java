@@ -13,7 +13,7 @@ public class AcessTest {
         // that has been nested in another top-level class for packaging convenience.
         DataStructure ds = DataStructure.Factory.createDataStructure();
         // access to inner class
-        DataStructure.DataStructureIterator iterator = DataStructure.Factory.createDataStructure().new EvenIterator();
+        // DataStructure.DataStructureIterator iterator = DataStructure.Factory.createDataStructure().new EvenIterator();
         DataStructure.EvenIterator iter = ds.new EvenIterator();
 
         while (iter.hasNext())

@@ -123,7 +123,10 @@ Two levels of formatting are provided:
 
 - `print` and `println`
 - `format`
+  - `System.out.format("The square root of %d is %f.%n", i, r);`
+  - use `%n` instead of `\n`
 
+<<<<<<< HEAD
 ### Data Streams
 
 - binary I/O of  primitive data type values and String values.
@@ -176,3 +179,62 @@ Object ob2 = in.readObject();
 
   - resolving a link: substitute the actual location for soft link.
 
+=======
+### I/O from the Command Line
+
+two ways of interaction:
+
+- Standard Streams - byte streams
+
+  read input from the keyboard and write output to the display
+
+  - Standard Input: `System.in`
+    - To use as a character stream: wrap in `InputStreamReader`
+  - Standard output: `System.out`
+  - Standard Error: `System.err`
+
+- console - character streams: `reader` and `writer` methods
+
+  - Useful for secure password entry: `readPassword` method
+
+  - To retrieve the Console object: `System.console()`
+
+  use `Console` to write a program to change user's password, see [Password.java](../src/io/Password.java)
+
+## File  I/O 
+
+### The Path class
+
+- creating a path 
+
+  `Path path = Paths.get(URL);` 
+
+- retrieving information about a path
+
+  ```java
+  Path path = Paths.get(URL)
+  System.out.format("toString: %s%n", path.toString());
+  System.out.format("getFileName: %s%n", path.getFileName());
+  System.out.format("getName(0): %s%n", path.getName(0));
+  System.out.format("getNameCount: %d%n", path.getNameCount());
+  System.out.format("subpath(0,2): %s%n", path.subpath(0,2));
+  System.out.format("getParent: %s%n", path.getParent());
+  System.out.format("getRoot: %s%n", path.getRoot());
+  ```
+
+  output is Operating System dependent.
+
+- convert path 
+  - To a string that can be opened from a browser: `toUri`
+  - To absolute path: `toAbsolutePath`
+
+- joining two paths
+  - `resolve()`
+
+### File Operations
+
+- `Files` class offers a set of static method for file and directory operations.
+-  `Files` methods work on instance of `Path` objects.
+
+- all methods that access the file system can throw an `IOException`
+>>>>>>> bd8ebd4b5173a6667ce31e2df37ef7bc1ca6f7db
