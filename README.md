@@ -266,6 +266,10 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
     Questions and Exercises: Regular Expressions
 
 ## Logs
+
+    Date: 2021/5/18
+    current: begin concurrency, pause for a while to do quantization experiment
+---
 	Date: 2021/5/18
 	current: finish Basic I/O (basicly ignoring some part of Files), next: Concurrency
 ---
