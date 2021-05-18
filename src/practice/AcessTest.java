@@ -19,6 +19,11 @@ public class AcessTest {
         while (iter.hasNext())
             System.out.print(iter.next() + " ");
 
+        System.out.println(" ");
+        
+        while (iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
         /*
         When to Use Nested Classes, Local Classes, Anonymous Classes, and Lambda Expressions
         Nested classes enable you to logically group classes that are only used in one place, increase the use of encapsulation, and create more readable and maintainable code.

@@ -124,3 +124,55 @@ Two levels of formatting are provided:
 - `print` and `println`
 - `format`
 
+### Data Streams
+
+- binary I/O of  primitive data type values and String values.
+
+- implement either `DataInput` or `DataOutput` Interface.
+
+- most widely-used implementations `DataInputStream`, `DataOutputStream`
+- **don't support `Object` type**
+
+### Object Streams
+
+- I/O of objects, classes need to implement the `Serializable` interface
+- Interface: `ObjectInput`, `ObjectOutput` sub-interfaces of `DataInput` and `DataOutput`
+- Implementations: `ObjectInputStream` and `ObjectOutputStream`
+
+- If `readObject()` doesn't return the object type expected, attempting to cast it to the correct type may throw a [`ClassNotFoundException`](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassNotFoundException.html).
+
+**Output and Input of Complex Objects**
+
+- If `readObject` is to reconstitute an object from a stream, it has to be able to reconstitute all of the objects the original object referred to.
+
+![I/O of multiple referred-to objects](https://docs.oracle.com/javase/tutorial/figures/essential/io-trav.gif)
+
+- a stream can only contain on copy of an object and any number of references to it.
+
+```java
+Object ob = new Object();
+out.writeObject(ob);
+out.writeObject(ob);
+
+Object ob1 = in.readObject();
+Object ob2 = in.readObject();
+```
+
+​	`ob1` and `ob2` will refer to a single object.
+
+- if a single object is written to two streams, it will be duplicated.
+
+## File I/O
+
+### What Is a Path?
+
+- relative or absolute
+
+- symbolic link (or soft link)
+
+  - transparent to applications, automatically redirect to the target.
+
+  ![Sample symbolic link](https://docs.oracle.com/javase/tutorial/figures/essential/io-symlink.gif)
+
+  - resolving a link: substitute the actual location for soft link.
+
