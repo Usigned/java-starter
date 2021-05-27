@@ -72,3 +72,16 @@ Both examples invoke `Thread.start` in order to start the new thread.
 - `Runnable` is more general
 - subclass `Thread` is easier to use but limited
 - In general, we should use the first way
+
+## Pausing Execution with Sleep
+
+`Thread.sleep` causes the current thread to suspend execution for a specified period. Two overloaded versions:
+
+- `Thread.sleep(millisecond)`
+- `Thread.sleep(millisecond, nanosecond)`
+
+> Note: these sleep times are not guaranteed to be precise, since they are limited by the facilities provided by the underlying OS.
+
+> `sleep throws InterruptedException` when another thread interrupts the current thread while `sleep` is active. 
+
+## Interrupts
