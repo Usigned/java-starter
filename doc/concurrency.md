@@ -85,3 +85,43 @@ Both examples invoke `Thread.start` in order to start the new thread.
 > `sleep throws InterruptedException` when another thread interrupts the current thread while `sleep` is active. 
 
 ## Interrupts
+
+- the interrupted thread must support its own interruption
+
+- supporting interruption
+
+  - add return when it triggers method that can throw `InterruptedException`
+
+  - add condition `Thread.interrupted()` to judge whether it's interrupted. It's better to use the following style, and centralized the handling code in a `catch` clause.
+
+    ```java
+    if (Thread.interrupted()) {
+        throw new InterruptedException();
+    }
+    ```
+
+- flags
+
+  - `Thread.interrupt` set `interrupt status`
+
+  - `Thread.interrupted` checks and clear the flag
+  - `isInterrupted` method does not clear the flag
+
+## Joins
+
+- `join `allows one thread to wait for the completion of another.
+
+- if t is a `Thread` object whose thread is currently occupied,
+
+  ```java
+  t.join()
+  ```
+
+- can make the thread to wait for specific time
+
+  ```java
+  t.join(1000)
+  ```
+
+- ??????????????????????????????????????
+
