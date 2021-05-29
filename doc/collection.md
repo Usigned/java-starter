@@ -17,8 +17,11 @@ an unified architecture for representing and manipulating collections.
 > Note:
 >
 > 1. the hierarchy consist of two distinct trees `Map` & `Collection` 
->
 > 2. all the core collection interfaces are generic.
+
+> Mistakes:
+>
+> 1. `Deque` should be inherited from `Queue`
 
 Specifics:
 
@@ -26,7 +29,7 @@ Specifics:
    - the least common denominator that all collections implement
    - Java doesn't provide any direct implementations of this interface
 2. `Set`
-   - not duplicate elements
+   - no duplicate elements
 3. `List`
    - an ordered collection
 
@@ -158,8 +161,8 @@ Collection<Type> noDups = new HashSet<Type>(c);
 or, in JDK 8:
 
 ```java
-c.stream().collect(Collectors.toSet()); // no gurantee of the set type
-c.stream().collect(Collectors.toCollection(TreeSet::new))
+Set<Type> newSet = c.stream().collect(Collectors.toSet()); // no gurantee of the set type
+Set<Type> newSet = c.stream().collect(Collectors.toCollection(TreeSet::new));
 ```
 
 ### Set Basic Operations
@@ -245,13 +248,17 @@ Other operations:
 
 ### Iterators
 
-`ListIterator` allows you to traverse the list
+`ListIterator` allows you to traverse the list:
 
 - in either direction
 - modify list during iteration
 - obtain the current position of the iterator
 
 `ListIterator` interface:
+
+- `List.ListIterator`
+  - without arguments: iterator positioned at beginning
+  - with `int` argument: iterator positioned at the specified index (0 - n)
 
 - `hasNext`, `next` and `remove` do the same as [`Iterator`](#Traversing Collections)
 
@@ -265,3 +272,110 @@ Other operations:
   - `set` overwrites the last element return by `next` or `previous`
 
   - `add` insert a new element before the current cursor position
+
+### Range-View Operations
+
+`subList(int fromIndex, int toIndex)`: return a `List` view of the range $[fromIndex, toIndex)$
+
+- changes in view are reflected in the original `List`
+
+> The semantics of the `List` returned by `subList` become undefined if elements are added to or removed from the backing `List` in any way other than via the returned `List`.
+>
+>  Thus, it's highly recommended that you use the `List` returned by `subList` only as a transient object.
+
+### List Algorithms
+
+Most polymorphic algorithms `Collections` apply specifically to `List` are summarized as follows:
+
+- `sort`
+- `shuffle`
+- `reverse`
+- `rotate`
+
+- `swap`
+- `replaceAll`: replaces all occurrences of one specified value with another.
+- `fill`: overwrites every element in a `List` with the specified value.
+- `copy`
+- `binarySearch`: search for an element using binary search
+- `indexOfSubList`
+- `lastIndexOfSubList`
+
+## The Queue Interface
+
+Besides basic `Collection` Operations, queues provide additional insertion, removal and inspection operations.
+
+```java
+public interface Queue<E> extends Collection<E> {
+    E element();
+    boolean offer(E e);
+    E peek();
+    E poll();
+    E remove();
+}
+```
+
+Each `Queue` method exists in two forms:
+
+1. throws an exception if the operation fails
+2. returns a special value(`null` or `false`) if the operation fails
+
+| Type of Op | Throws exception | Returns special value |
+| ---------- | ---------------- | --------------------- |
+| Insert     | `add(e)`         | `offer(e)`            |
+| Remove     | `remove()`       | `poll()`              |
+| Examine    | `element()`      | `peek()`              |
+
+Queue typically order element in a FIFO order. 
+
+- exceptions: priority queues
+
+It's possible for a `Queue` implementation to restrict the capacity -- *bounded*. Some `Queue` in`java.util.concurrent` are bounded, but the implementations in `java.util` are not.
+
+- `add` method which `Queue` inherit from `Collection`, inserts an element unless it would violate the capacity restrictions, in which case it throws `IllegalStateException`. `offer` method only used on bounded queues and indicate failure by returning `false`.
+- `remove` and `poll` remove and return the head of the queue. Exactly which element gets removed is a function of the queue's ordering policy. They behave different if the queue is empty: `remove` throws `NoSuchElementException` and `poll` returns `null`.
+- The `element` and `peek` methods return, but do not remove, the head of the queue.  If the queue is empty, `element` throws `NoSuchElementException`, while `peek` returns `null`.
+
+`Queue` implementations generally do not allow insertion of `null` elements. The `LinkedList` implementation is an exception for historical reasons, but you should refrain from taking advantage of this.
+
+## The Deque Interface
+
+> Usually pronounce as `deck`
+
+a double-ended-queue that supports the insertion and removal of elements at both end points.
+
+`Deque` interface is a richer abstract data type than `Stack` and `Queue` because it implement them both.
+
+Predefined classes:
+
+- `ArrrayDeque`
+- `LinkedList`
+
+### Insert
+
+- `addFirst` and `offerFirst`
+- `addLast` and `offerLast`
+
+- when capacity is restricted, it's better to use `offer`
+
+### Remove
+
+- `removeFirst `, `pollFirst`
+- `removeLast` and `pollLast`
+
+- when empty, `poll` return `null` and `remove` throw exception
+
+### Retrieve
+
+- `getFirst` and `peekFirst`
+
+- `getLast` and `peekLast`
+
+### Summary
+
+| **Type of Operation** | **First Element (Beginning of the** `Deque` **instance)** | **Last Element (End of the** `Deque` **instance)** |
+| --------------------- | --------------------------------------------------------- | -------------------------------------------------- |
+| **Insert**            | `addFirst(e)` `offerFirst(e)`                             | `addLast(e)` `offerLast(e)`                        |
+| **Remove**            | `removeFirst()` `pollFirst()`                             | `removeLast()` `pollLast()`                        |
+| **Examine**           | `getFirst()` `peekFirst()`                                | `getLast()` `peekLast()`                           |
+
+In addition to these basic methods to insert,remove and examine a `Deque` instance.
