@@ -3,14 +3,13 @@ package collection;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class FindDups {
     public static void main(String[] args) {
-        // findDups(args);
-        //findDupsOld(args);
-        // findDups2(args);
+        findDups(args);
+        findDupsOld(args);
+        findDups2(args);
         Arrays.asList(args).stream().collect(Collectors.toList()).subList(0, 2).forEach((e)-> System.out.println(e));
     }
 

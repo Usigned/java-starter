@@ -379,3 +379,51 @@ Predefined classes:
 | **Examine**           | `getFirst()` `peekFirst()`                                | `getLast()` `peekLast()`                           |
 
 In addition to these basic methods to insert,remove and examine a `Deque` instance.
+
+## The Map Interface
+
+an object that maps keys to values.
+
+- no duplicate keys: each can map to at most one value
+- models the mathematical *function* abstraction
+
+- operations:
+
+  - basic operations:  such as `put`, `get`, `remove`, `containsKey`, `containsValue`, `size`, and `empty`
+  - bulk operations:  such as `putAll` and `clear`
+
+  - collection views:  such as `keySet`, `entrySet`, and `values`
+
+Implementations:
+
+- `HashMap`
+- `TreeMap`
+- `LinkedHashMap`
+
+- behavior precisely analogous to `HashSet`, `TreeSet` and `LinkedHashSet`, see [The Set Interface](#The Set Interface)
+
+### Map Interface Basic Operations
+
+basic operations of `Map` behave exactly like their counterparts in `Hashtable`
+
+- `put`
+- `set`
+- `containsKey`
+- `containsValue`
+- `size`
+- `isEmpty`
+
+Two `Map` instances are equal if they represent the same key-value mappings.
+
+By convention, all general-purpose `Map` implementations provide constructors that take a `Map` object and initialize the new `Map` to contain all the key-value mappings in the specified `Map`.
+
+```java
+// m is a Map
+Map<K, V> copy = new HashMap<K, V>(m)
+```
+
+### Map Interface Bulk Operations
+
+- `clear`
+
+- `putAll`: `Map` version of `addAll` in `Collection`

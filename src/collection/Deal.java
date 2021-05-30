@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Deal {
     public static void main(String[] args) {
@@ -33,7 +32,7 @@ public class Deal {
                 cards.add(rank + " of " + suit);
             }
         }
-        List<String> deck = cards.stream().collect(Collectors.toCollection(ArrayList::new));
+        List<String> deck = new ArrayList<>(cards);
         Collections.shuffle(deck);
 
         if (numHands * cardsPerHand > deck.size()) {
