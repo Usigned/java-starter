@@ -427,3 +427,23 @@ Map<K, V> copy = new HashMap<K, V>(m)
 - `clear`
 
 - `putAll`: `Map` version of `addAll` in `Collection`
+  - overrides if the `key` already exist
+
+### Collection Views
+
+3 ways to view a `Map` as a `Collection`
+
+- `keySet` - `Set` of keys
+- `Values` - `Collection` of values, not `Set` because it can contain duplicate values
+- `entrySet` - `Set` of key-value pairs  using nested Interface `Map.Entry`
+
+The `Collection` views provide the *only* means to iterate over a `Map`.
+
+Changes on views will reflect on the underlying map
+
+- support `remove` but not `add`
+
+- Iterator's `remove` will remove the associated entry
+
+Bulk operations on `Collection` view can be potent tools
+
