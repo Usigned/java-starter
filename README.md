@@ -267,6 +267,9 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
 
 ## Logs
 
+    Date:2021/6/5
+    current: collection.aggregate operations.reduction
+---
 	Date:2021/5/29
 	current: collection.interface ~-map interface
 ---

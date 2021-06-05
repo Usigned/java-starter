@@ -407,7 +407,7 @@ Implementations:
 basic operations of `Map` behave exactly like their counterparts in `Hashtable`
 
 - `put`
-- `set`
+- `get`
 - `containsKey`
 - `containsValue`
 - `size`
@@ -447,3 +447,124 @@ Changes on views will reflect on the underlying map
 
 Bulk operations on `Collection` view can be potent tools
 
+## Object Ordering
+
+sort a list `Collections.sort(l);`
+
+the elements must implements `Comparable`， if not so, method throws an exception
+
+```java
+public interface Comparable<T> {
+	public int compareTo(T o);
+}
+```
+
+- `a.compareTo(b)< 0 `  -> `a < b`
+
+> Note: 
+>
+> - `equals` and `hashcode` is required for a class to be the key of map
+> - `compareTo` is used for ordered and not used at all by map, since it's not ordered
+> - see [java - Do my equals and hashcode must be implemented based on compareTo method? - Stack Overflow](https://stackoverflow.com/questions/46699020/do-my-equals-and-hashcode-must-be-implemented-based-on-compareto-method)
+> - There are four restrictions on `compareTo`, see `Comparable` doc for more.
+
+### Comparator
+
+sort something that didn't implements `Comparable`
+
+```java
+pubilc interface Comparator<T> {
+	int compare(T o1, T o2);	
+}
+```
+
+- `Comparator.compare(o1, o2) < 0` -> `o1 < o2`
+- reverse order: passes  the second argument as the first.
+
+- to use: `Collections.sort(list, comparator)`
+
+> Note:
+>
+> - deficiency: cannot be used to order a sorted collection,cause it generates ordering not compatible with equals.
+> - clip is necessary in cause of overflow
+>
+> ```
+> return (e1.number() < e2.number() ? -1 :
+>                (e1.number() == e2.number() ? 0 : 1));
+> ```
+>
+>  
+
+## The SortedSet Interface
+
+additional operations:
+
+- `Range view`
+- `Endpoints`: return the first or last element
+
+- `Comparator access`
+
+```java
+public interface SortedSet<E> extends Set<E> {
+    SortedSet<E> subSet(E fromElement, E toElement);
+    SoredSet<E> headSet(E toElement);
+    SoredSet<E> tailSet(E toElement);
+    
+    E first();
+    E last();
+    
+    Comparator<? super E> comparator();
+}
+```
+
+>Rather than indices, the endpoints are objects and must be comparable to the elements in the sorted set, using the `Set`'s `Comparator` or the natural ordering of its elements, whichever the `Set` uses to order itself.
+
+### Constructors
+
+1. take a `Collection` as parameter
+2. take a `Comparator` as parameter: return an empty set
+
+## The SortedMap Interface
+
+```java
+public interface SortedMap<K, V> extends Map<K, V>{
+    Comparator<? super K> comparator();
+    SortedMap<K, V> subMap(K fromKey, K toKey);
+    SortedMap<K, V> headMap(K toKey);
+    SortedMap<K, V> tailMap(K fromKey);
+    K firstKey();
+    K lastKey();
+}
+```
+
+# Aggregate operation
+
+- pipelines and streams
+  - pipelines
+    - source
+    - intermediate operations: produces a new stream, such as  `filter`
+    - terminal operation: produces a non-stream result,  such as `forEach`
+  - streams
+    - sequence of elements
+    - do not store data
+    - carry values from a source through a pipeline
+
+- differences between aggregate operations and iterators
+  - internal iteration: JDK determine how to iterate
+  - process elements from a stream not directly from a collection
+  - support behavior as parameters
+
+## Reduction
+
+reduction operations
+
+- terminal operations that return one values by combining the contents of a stream or a collection
+
+- JDK provides with general-purpose reduction operations `reduce` and `collect`
+  - `Stream.reduce` Method
+    - `identity`
+    - `accumulator`
+  - `Stream.collect` Method
+    - `supplier`
+    - `accumulator`
+    - `combiner`
