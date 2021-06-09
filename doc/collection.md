@@ -19,7 +19,7 @@ an unified architecture for representing and manipulating collections.
 > 1. the hierarchy consist of two distinct trees `Map` & `Collection` 
 > 2. all the core collection interfaces are generic.
 
-> Mistakes:
+> Issues:
 >
 > 1. `Deque` should be inherited from `Queue`
 
@@ -568,3 +568,352 @@ reduction operations
     - `supplier`
     - `accumulator`
     - `combiner`
+
+# Implementations
+
+>**For the most part, the choice of implementation affects only performance.**
+
+- general-purpose implementations
+
+| **Interface** | Hash table | Resizable array | Tree      | Linked List  | Hash table + Linked List |
+| ------------- | ---------- | --------------- | --------- | ------------ | ------------------------ |
+| `Set`         | `HashSet`  |                 | `TreeSet` |              | `LinkedHashSet`          |
+| `List`        |            | `ArrayList`     |           | `LinkedList` |                          |
+| `Queue`       |            |                 |           |              |                          |
+| `Deque`       |            | `ArrayDeque`    |           | `LinkedList` |                          |
+| `Map`         | `HashMap`  |                 | `TreeMap` |              | `LinkedHashMap`          |
+
+- special-purpose implementations
+  - boost performance in special situation
+  - non-standard performance characteristic, usage restrictions
+- concurrent implementations
+- wrapper implementations
+  - add or restrict functionality on general-purpose implementations
+- convenience implementations
+  - convenient, but with restricted functionality
+- abstract implementations
+  - template for custom implementations
+
+## Set
+
+### 通用实现
+
+- `HashSet`
+  - 高效但无序的
+  - 具有可调节的初始化参数: 初始数组的容量
+
+- `TreeSet`
+  - 低效，有序，实现了`OrderedSet`接口
+  - 无可调参数
+
+- `LinkedHashSet`
+  - 按插入顺序排序，无法指定如何排序
+  - 可调参数同`HashSet`, 但是遍历所需时间不会被其容量大小影响
+
+### 专用实现
+
+- `EnumSet`
+  - 高效的用于枚举类型的`Set`的实现
+  
+  - 所用元素必须属于同一种枚举类型
+  - 除标准的`Set`接口功能外还具有许多额外的功能
+  
+- `CopyOnWriteArraySet`
+
+  - 所有修改型操作如`add`，`set`和`remove`都通过复制一个新数组实现
+  - 不需要锁，能够并行的执行增加或删除元素操作
+  - 缺点：`add` `remove` `contains` 都需要线性时间
+  - 只适合用于很长修改，经常遍历的集合
+
+## List
+
+### 通用实现
+
+- `ArrayList`
+  - 常数级时间的随机访问
+  - 非线程安全版的`Vector`
+  - 初始容量可调
+
+- `LinkedList`
+
+  - 线性时间的随机访问
+  - 性能低下
+
+  - 同时还实现了`Queue Deque`接口
+
+### 专用实现
+
+- `CopyOnWriteArrayList`
+  - 类似`CopyOnWriteArraySet`
+
+- `Vector`
+  - 线程安全
+  - 比`ArrayList` + `Collections.synchronizedList`稍快
+  - 有很多老旧的操作，建议使用`List`接口来操作
+- Arrays.asList
+  - 简便实现
+  - 返回的`List`长度无法变化
+
+## Map
+
+### 通用实现
+
+- `HashMap`
+  - 高效，无序
+- `TreeMap`
+  - 低效但有序，实现了`OrderedMap`接口
+- `LinkedHashMap`
+  - 高效，按插入顺序排序
+  - 具有`removeEldestEntry`方法
+
+### 专用实现
+
+- `EnumMap`
+- `WeakHashMap`
+- `WeakHashMap`
+
+### 并行实现
+
+- `ConcurrentMap`接口
+  - `java.util.concurrent`
+  - 扩展了`Map`中的接口，添加了原子操作`putIfAbsent` `remove` `replace`
+
+- `ConcurrentHashMap`
+
+  - `ConcurrentMap`的实现
+  - 高效，支持高并发的实现
+  - 设计目的是替代`Hashtable`，故除了`ConcurrentMap`中的接口外还有许多`Hashtable`中的接口，建议通过`ConcurrentMap`来操作
+
+  - 底层是一个`Hashtable`
+
+## Queue
+
+### 通用实现
+
+- `LinkedList`
+  - FIFO
+  - 同时实现`Deque`
+- `PriorityQueue`
+  - 通过堆实现
+  - 排序顺序在创建时指定，可以是元素默认顺序或由给定的`Comparator`指定
+  - `iterator`无法保证遍历顺序，如果需要按安大小遍历使用`Arrays.sort(pq.toArray())`
+
+### 并行实现
+
+- `BlockingQueue` 接口
+
+  - `java.util.concurrent`
+
+  - `Queue`的多线程扩展
+
+  - 实现
+
+    - [`LinkedBlockingQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/LinkedBlockingQueue.html) 
+    - [`ArrayBlockingQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ArrayBlockingQueue.html)
+    - [`PriorityBlockingQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/PriorityBlockingQueue.html)
+
+    - [`DelayQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/DelayQueue.html) 
+    - [`SynchronousQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/SynchronousQueue.html) 
+
+## Deque
+
+### 通用实现
+
+- `LinkedList`
+  - 更灵活，允许null元素
+  - 同时实现`List`
+
+- `ArrayDeque`
+
+  - 不允许null
+  - 头尾添加删除更高效
+
+  - 占用内存少
+
+- 都不支持并发访问
+
+### 并行实现
+
+- `LinkedBlockingDeque`
+  - `Deque`的并行实现
+
+## Wrapper
+
+- decorator模式
+
+- 匿名实现，Collections中的静态工厂方法
+
+### 同步wrapper
+
+- 给任意的集合添加线程安全属性
+  - `synchronizedCollection`
+  - `synchronizedSet`
+  - `synchronizedList`
+  - `synchronizedMap`
+  - `synchronizedSortedSet`
+  - `synchronizedSortedMap`
+
+- 为了保证串行访问，所用访问都必须在方法返回的集合上操作
+
+- exp
+
+  ```java
+  List<Type> list = Collections.synchronizedList(new ArrayList<Type>())
+  ```
+
+  这种方式创建的集合和`Vector`一模一样
+
+- 在并行访问时，用户需要手动同步集合：遍历时通过多个调用实现的
+
+  ```java
+  Collection<Type> c = Collections.synchronizedCollection(myCollection);
+  synchronized(c) {
+      for (Type e : c)
+          foo(e);
+  }
+  ```
+
+### 无法修改wrapper
+
+- 禁用所用修改集合的操作
+- 所用修改集合的操作会抛出异常`UnsupportedOperationException`
+
+- 目的：
+
+  - 使一个集合在创建后变得不可修改
+  - 使得特定的用户能通过只读的方式访问数据
+
+- wrappers:
+
+  ```java
+  public static <T> Collection<T> unmodifiableCollection(Collection<? extends T> c);
+  public static <T> Set<T> unmodifiableSet(Set<? extends T> s);
+  public static <T> List<T> unmodifiableList(List<? extends T> list);
+  public static <K,V> Map<K, V> unmodifiableMap(Map<? extends K, ? extends V> m);
+  public static <T> SortedSet<T> unmodifiableSortedSet(SortedSet<? extends T> s);
+  public static <K,V> SortedMap<K, V> unmodifiableSortedMap(SortedMap<K, ? extends V> m);
+  ```
+
+### Checked Interface Wrappers
+
+- `Collections.checked`用于泛型集合
+
+- 返回一个动态的，类型安全的集合view
+- 当用户尝试将一个类型不一致的类型加入集合时会抛出异常`ClassCastException`
+
+- 泛型机制-静态检查，动态类型安全view-动态检查
+
+## Convenience Implementation
+
+- 更方便，更高效的迷你实现，如果你不需要某个集合类型的全部功能
+
+- 通过静态工厂来实现
+
+### 数组的List view
+
+`Arrays.asList`
+
+- 返回的List的长度无法变化：`remove` `add`都会抛出异常`UnsupportedOperation`
+
+### 不可变的多复制列表
+
+一个元素的多份复制组成的不可变List
+
+`Collections.nCopies`
+
+**主要用途**
+
+- 初始化一个刚创建的`List`
+
+  - 如：创建一个含1000个null的ArrayList
+
+  ```java
+  List<Type> list = new ArrayList<Type>(Collections.nCopies(1000, (Type)null));
+  ```
+
+- 向现有的数组中添加元素
+
+  - 向一个`List<String>`中添加大量重复元素
+
+  ```
+  lovablePets.addAll(Collections.nCopies(69, "fruit bat"));
+  ```
+
+### 不可变的单例集合
+
+一个包含一个特定元素的集合
+
+`Collections.singleton `
+
+### 空集
+
+- `emptySet`
+- `emptyList`
+- `emptyMap`
+
+# 自定义实现
+
+## custom collection 使用场景：
+
+- 持久化存储：Java自带的集合都存储在内存中，如果需要持久化存储可以自定义集合类型
+- 应用相关
+- 高性能，特定需求
+- 高性能，通用数据结构
+- 增加新功能
+- 适配器
+
+## 如何自定义实现
+
+Java Collection Framework中提供了抽象实现来支持自定义实现，其中包括
+
+- `AbstractCollection`
+- `AbstractSet`
+- `AbstractList`
+- `AbstractSequentialList`
+- `AbstractQueue`
+
+- `AbstractMap`
+
+自定义实现流程:
+
+1. 选择合适的抽象实现作为父类
+2. 实现其中所有抽象方法
+3. 测试
+4. 如果对性能有要求，阅读API文档，替换重载其中不符合要求的父类（抽象实现中继承来的）方法
+
+# Interoperability
+
+- 兼容性：旧版集合与新版集合之间的转换
+- API设计
+
+## 兼容性
+
+core collection interface和早期版中的: Vector, Hashtable, array, Enumeration的转换
+
+详见[Compatibility (The Java™ Tutorials > Collections > Interoperability) (oracle.com)](https://docs.oracle.com/javase/tutorial/collections/interoperability/compatibility.html)
+
+## API设计
+
+设计原则：
+
+- 参数
+
+  - 永远不要使用具体实现类型当作参数：如使用`ArrayList`而不是`List`
+  - 尽可能使用抽象层次高的类型作为参数：如能使用`Collection`就不用`List`
+
+  - 不要使用自己定义的点对点的集合类型当作参数，这样就无法发挥Java Collection Framework的用处
+
+- 返回值
+
+  - 要求相比参数要宽松，与参数要求相反
+
+  - 返回值类型应该尽可能的具体
+
+- legacy APIs
+
+  - 有很多遗留代码没有使用Java Collection Framework
+
+  - 改装遗留的集合类型是其实现JCF中的标准接口
+    - 如果接口间存在冲突而无法完成，则使用适配器
+  - 改装原有的API是其符合上述的设计原则
+    - 如果无法实现，在原有的集合中提供一个构造器或工厂方法是其能将标准集合作为参数而生成一个遗留类型的集合
