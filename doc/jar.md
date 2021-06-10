@@ -62,3 +62,87 @@ Created-By: 1.7.0_06 (Oracle Corporation)
 jar cfm jar-file manifest-addition input-file(s)
 ```
 
+> m表示使用现有的文件作为manifest文件
+
+### 设置程序入口
+
+```
+Main-Class: classname
+```
+
+设置入口后可以直接执行jar文件
+
+```shell
+java -jar JAR-name
+```
+
+通过JAR命令行来设置manifest中的程序入口
+
+```shell
+jar cfe app.jar MyApp MyApp.class
+```
+
+e表示`entrypoint` 添加或覆盖mainfest文件，如果入口在包内则用
+
+```
+jar cfe Main.jar foo.Main foo/Main.class
+```
+
+### 添加Classpath
+
+```
+Class-Path: jar1-name jar2-name directory-name/jar3-name
+```
+
+**Example**
+
+向MyUtils.jar中的类添加classpath
+
+1. 创建一个文本文件Manifest.txt并添加以下内容
+
+```txt
+Class-Path: MyUtils.jar
+
+```
+
+> 结尾注意另起一行
+
+2. 打包创建JAR
+
+```shell
+jar cfm MyJar.jar Manifest.txt MyPackage/*.class
+```
+
+### 设置版本信息
+
+| Header                 | Exp                                       |
+| ---------------------- | ----------------------------------------- |
+| Name                   | Name: java/util/                          |
+| Specification-Title    | Specification-Title: Java Utility Classes |
+| Specification-Version  | Specification-Version: 1.2                |
+| Specification-Vendor   | Specification-Vendor: Example Tech, Inc.  |
+| Implementation-Title   | Implementation-Title: java.util           |
+| Implementation-Version | Implementation-Version: build57           |
+| Implementation-Vendor  | Implementation-Vendor: Example Tech, Inc. |
+
+for more see [Java™ Product Versioning (oracle.com)](https://docs.oracle.com/javase/8/docs/technotes/guides/versioning/spec/versioning2.html#wp89936)
+
+### 封包
+
+```
+Name: myCompany/myPackage/
+Sealed: true
+```
+
+**Example**
+
+如果想封装MyJar.jar中的两个包firstPackage和firstPackage
+
+```
+Name: myCompany/firstPackage/
+Sealed: true
+
+Name: myCompany/secondPackage/
+Sealed: true
+```
+
