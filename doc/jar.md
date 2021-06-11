@@ -146,3 +146,35 @@ Name: myCompany/secondPackage/
 Sealed: true
 ```
 
+# 电子签名
+
+Java平台支持给JAR文件进行电子签名，电子签名包括：
+
+1. 签名 sign
+2. 验证签名 verfication
+
+电子签名实现：公钥，密钥，证书
+
+- 公钥，密钥是成对出现的
+- 密钥相当于签名的笔，只能通过对应的公钥识别
+- 为了确定公钥来自提供方，还需要由机构颁发的证书(certificate)
+
+总结：
+
+- 签名者使用密钥给JAR文件签名
+- 对应的公钥和证书被放置在JAR文件中方便使用者验证签名
+
+## 给JAR文件签名
+
+要进行签名必须拥有密钥，密钥和对应的公钥证书存储在keystores数据库中
+
+```shell
+jarsigner jar-file alias
+```
+
+## 验证签名
+
+```shell
+jarsigner -verify jar-file
+```
+
