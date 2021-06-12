@@ -267,6 +267,10 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
 
 ## Logs
 
+---
+    Date: 2021/6/12
+    current: collection finished, JAR almost finished (example excluded), start essential class/ system configuration
+---
     Date:2021/6/5
     current: collection.aggregate operations.reduction
 ---
