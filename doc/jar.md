@@ -178,3 +178,9 @@ jarsigner jar-file alias
 jarsigner -verify jar-file
 ```
 
+# 使用JAR相关API
+
+see [Using JAR-related APIs (The Java™ Tutorials > Deployment > Packaging Programs in JAR Files) (oracle.com)](https://docs.oracle.com/javase/tutorial/deployment/jar/apiindex.html)
+
+> 有些难度，建议学完网络之后再看
+
