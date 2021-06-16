@@ -11,7 +11,7 @@
 - 版本控制
 - 便携
 
-# 使用JAR文件基本操作
+## 使用JAR文件基本操作
 
 JAR文件被打包为ZIP格式
 
@@ -36,11 +36,11 @@ JAR文件被打包为ZIP格式
 >| x    | extract                        |
 >| u    | update                         |
 
-# Manifest File
+## Manifest File
 
 jar元文件，用于版本控制，电子签名，包封装等
 
-## **默认manifest文件**
+### **默认manifest文件**
 
 创建jar时自动添加
 
@@ -51,7 +51,7 @@ Manifest-Version: 1.0
 Created-By: 1.7.0_06 (Oracle Corporation)
 ```
 
-## 修改manifest文件
+### 修改manifest文件
 
 将现有的文本文件作为manifest文件，要求：
 
@@ -64,7 +64,7 @@ jar cfm jar-file manifest-addition input-file(s)
 
 > m表示使用现有的文件作为manifest文件
 
-### 设置程序入口
+#### 设置程序入口
 
 ```
 Main-Class: classname
@@ -88,7 +88,9 @@ e表示`entrypoint` 添加或覆盖mainfest文件，如果入口在包内则用
 jar cfe Main.jar foo.Main foo/Main.class
 ```
 
-### 添加Classpath
+#### 添加Classpath
+
+关于class path相关内容见[PATH and CLASSPATH ](https://docs.oracle.com/javase/tutorial/essential/environment/paths.html)
 
 ```
 Class-Path: jar1-name jar2-name directory-name/jar3-name
@@ -113,7 +115,7 @@ Class-Path: MyUtils.jar
 jar cfm MyJar.jar Manifest.txt MyPackage/*.class
 ```
 
-### 设置版本信息
+#### 设置版本信息
 
 | Header                 | Exp                                       |
 | ---------------------- | ----------------------------------------- |
@@ -127,7 +129,7 @@ jar cfm MyJar.jar Manifest.txt MyPackage/*.class
 
 for more see [Java™ Product Versioning (oracle.com)](https://docs.oracle.com/javase/8/docs/technotes/guides/versioning/spec/versioning2.html#wp89936)
 
-### 封包
+#### 封包
 
 ```
 Name: myCompany/myPackage/
@@ -146,7 +148,7 @@ Name: myCompany/secondPackage/
 Sealed: true
 ```
 
-# 电子签名
+## 电子签名
 
 Java平台支持给JAR文件进行电子签名，电子签名包括：
 
@@ -164,7 +166,7 @@ Java平台支持给JAR文件进行电子签名，电子签名包括：
 - 签名者使用密钥给JAR文件签名
 - 对应的公钥和证书被放置在JAR文件中方便使用者验证签名
 
-## 给JAR文件签名
+### 给JAR文件签名
 
 要进行签名必须拥有密钥，密钥和对应的公钥证书存储在keystores数据库中
 
@@ -172,15 +174,50 @@ Java平台支持给JAR文件进行电子签名，电子签名包括：
 jarsigner jar-file alias
 ```
 
-## 验证签名
+### 验证签名
 
 ```shell
 jarsigner -verify jar-file
 ```
 
+<<<<<<< HEAD
 # 使用JAR相关API
 
 see [Using JAR-related APIs (The Java™ Tutorials > Deployment > Packaging Programs in JAR Files) (oracle.com)](https://docs.oracle.com/javase/tutorial/deployment/jar/apiindex.html)
 
 > 有些难度，建议学完网络之后再看
+=======
+# Java扩展机制
+
+>  Java extension or optional packages
+
+扩展机制使得运行时环境可以不用指明class path就可以加载扩展
+
+- 在这个层面上看，扩展类和java平台核心类是类似的
+- 扩展的类和public的API都可以自动的被平台上运行的应用检索到
+- 扩展通过JAR文件分发
+
+![This figure shows the relationships between Application, Java Platform, and Extensions.](https://docs.oracle.com/javase/tutorial/figures/ext/exta.gif)
+
+## 创建和使用扩展
+
+创建扩展首先要将包或类打包为JAR文件格式，之后将JAR文件当作扩展有两种途径
+
+1. 将JAR文件放在JRE的指定位置，这时这个扩展被称为installed extension
+2. 通过JAR文件中的manifest文件来引用另一个JAR文件，这时称为download extension
+
+### Installed extension
+
+installed extensions被放置在JRE软件`lib/ext`目录下的JAR文件
+
+JRE是JDK的严格子集，通常JDK的目录结构如下
+
+![JDK software directory tree](https://docs.oracle.com/javase/tutorial/figures/ext/extb1.gif)
+
+`lib/ext`目录下的任何JAR文件都会被自动识别为扩展
+
+> JDK 9以后这个机制被移除，JDK 9以后使用JAR扩展需要将其添加到class path中
+
+### Download extension
+>>>>>>> a576493f83809af77f3b101728267e290947ea75
 
