@@ -310,3 +310,4 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
 ---
     Date: 2021/5/7
     current: Interfaces and Inheritance
+
