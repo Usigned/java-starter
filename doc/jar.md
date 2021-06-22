@@ -180,6 +180,13 @@ jarsigner jar-file alias
 jarsigner -verify jar-file
 ```
 
+<<<<<<< HEAD
+# 使用JAR相关API
+
+see [Using JAR-related APIs (The Java™ Tutorials > Deployment > Packaging Programs in JAR Files) (oracle.com)](https://docs.oracle.com/javase/tutorial/deployment/jar/apiindex.html)
+
+> 有些难度，建议学完网络之后再看
+=======
 # Java扩展机制
 
 >  Java extension or optional packages
@@ -212,4 +219,5 @@ JRE是JDK的严格子集，通常JDK的目录结构如下
 > JDK 9以后这个机制被移除，JDK 9以后使用JAR扩展需要将其添加到class path中
 
 ### Download extension
+>>>>>>> a576493f83809af77f3b101728267e290947ea75
 
