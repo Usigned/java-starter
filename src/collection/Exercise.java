@@ -1,34 +1,25 @@
 package collection;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Exercise {
     public static void main(String[] args) {
-        // randomPring(args);
+        // randomPrint(args);
         // findDups(args);
         List<String> l = Arrays.asList(" a a ff", "a b b  ");
         trim(l);
-        l.stream().forEach(e->System.out.println(e));
+        l.forEach(System.out::println);
     }
 
-    static void randomPring(String[] args) {
+    static void randomPrint(String[] args) {
         Collections.shuffle(Arrays.asList(args));
-        Arrays.asList(args).forEach((e)-> System.out.println(e));
+        Arrays.asList(args).forEach(System.out::println);
     }
 
     static void findDups(String[] args) {
-        SortedSet<String> s = new TreeSet<String>((o1, o2)->{
-            return o1.hashCode() - o2.hashCode();
-        });
-        Arrays.asList(args).forEach((e)->s.add(e));
-        s.stream().forEachOrdered((e)->System.out.println(e));
+        SortedSet<String> s = new TreeSet<>(Comparator.comparingInt(String::hashCode));
+        s.addAll(Arrays.asList(args));
+        s.forEach(System.out::println);
     }
 
     static void trim(List<String> args) {
