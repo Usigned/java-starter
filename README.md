@@ -311,3 +311,39 @@ reference material [On java8](https://usigned.github.io/OnJava8/) (Chinese Editi
     Date: 2021/5/7
     current: Interfaces and Inheritance
 
+## TODOs
+
+- [x] java基础语法
+
+  - 基本数据类型，引用
+  - 类型转换，强转（低-》高，instanceof 能对比就能强转）
+  - 运算符: ? :, instance of
+
+  - javaDoc
+  - 面向对象
+  - 修饰符, private protected, default(package private), public
+  - 异常
+
+- [ ] 常用类
+  - Object
+  - Math
+  - Random
+  - 自动装箱，拆箱
+  - File，官方新版用Files
+  - Date
+  - String, StringBuffer, StringBuilder
+
+- [x] collection framework
+  - 基本集合框架
+  - 流处理与lambda表达式
+- [ ] IO流
+  - 字节流
+  - 字符流
+
+- [ ] 多线程
+
+- [ ] 网络编程
+  - socket类
+- [ ] 注解
+- [ ] 反射
+
