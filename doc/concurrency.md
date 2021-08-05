@@ -235,3 +235,61 @@ public class MsLunch {
 ## 死锁
 
 死锁描述的场景是两个或多个线程都被阻塞，循环等待。
+
+一个例子，规则是一个人向另一个人鞠躬后，直到另一个人回复你之前，你要保持鞠躬状态。假设两个人同时向对方鞠躬，这时就会发生死锁
+
+```java
+public class DeadLock {
+    static class Friend {
+        private final String name;
+
+        Friend(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public synchronized void bow(Friend bower) {
+            // bower向this鞠躬
+            System.out.printf("%s: %s"
+                + " has bowed to me!%n",
+                this.name, bower.getName());
+            // this向bower回复
+            bower.bowBack(this);
+        }
+
+        public synchronized void bowBack(Friend bower) {
+            System.out.printf("%s: %s has bowed back to me!%n", this.name, bower.getName());
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        // 当你向一个朋友鞠躬后，在朋友回复你之前，你要一直保持鞠躬
+        final Friend alpha = new Friend("Alpha");
+        final Friend beta = new Friend("Beta");
+        new Thread(() -> alpha.bow(beta)).start();
+        new Thread(() -> beta.bow(alpha)).start();
+//        ((Runnable) () -> alpha.bow(beta)).run();
+//        ((Runnable) () -> beta.bow(alpha)).run();
+        
+    }
+}
+```
+
+## Starvation and Livelock
+
+比较少见的情况
+
+1. Starvation
+
+   一个线程无法获取公共资源并继续工作，这种情况发生于共享的公共资源被贪婪的线程长时间占用。比如一个对象中的一个同步方法执行时间很长，如果一个线程经常使用这个方法，那么其他需要使用同步方法的线程就会被阻塞。
+
+2. Livelock
+
+   通常线程会根据相互间的响应采取行动，如果两个线程都是这种行为时就有可能发生livelock。
+
+   和死锁一样，livelock的线程也无法继续，但是他们并未被阻塞，而是忙于响应对方的请求。
+
+   打个比方：一个人到自己左手边给另一个人让路，这时对方也到自己右手边让路，两人又被阻塞了。
