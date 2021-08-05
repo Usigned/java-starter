@@ -1,6 +1,6 @@
 package concurrency;
 
-public class HelloRunable implements Runnable {
+public class HelloRunnable implements Runnable {
 
     @Override
     public void run() {
@@ -8,7 +8,7 @@ public class HelloRunable implements Runnable {
     }
 
     public static void main(String[] args) {
-        (new Thread(new HelloRunable())).start();
+        (new Thread(new HelloRunnable())).start();
     }
     
 }
