@@ -293,3 +293,49 @@ public class DeadLock {
    和死锁一样，livelock的线程也无法继续，但是他们并未被阻塞，而是忙于响应对方的请求。
 
    打个比方：一个人到自己左手边给另一个人让路，这时对方也到自己右手边让路，两人又被阻塞了。
+
+# Guarded Blocks
+
+大多数线程会在特定的情况下触发，如`guardedJoy`只有在共享变量`joy`为真时才能继续。理论上可以用一个循环来阻塞，如下实现。但是这种实现会一直循环，十分浪费资源。
+
+```java
+public void guardedJoy() {
+    // Simple loop guard. Wastes
+    // processor time. Don't do this!
+    while(!joy) {}
+    System.out.println("Joy has been achieved!");
+}
+```
+
+有效率的实现方法是`Object.wait`，可用于挂起当前线程。`wait`直到特定事件（虽然可能不是你等待的事件，故需要将其放入循环中）触发前不会返回。
+
+```java
+public synchronized guardedJoy() {
+    while(!joy) {
+        try {
+            wait();
+        } catch (InterruptedException e) {}
+    }
+    System.out.println("Joy and efficiency has been achieved!");
+}
+```
+
+>  **Note**: Always invoke `wait` inside a loop that tests for the condition being waited for. Don't assume that the interrupt was for the particular condition you were waiting for, or that the condition is still true.
+
+Q: 为什么方法是synchronized?
+
+A: 假设调用`wait`的对象是`d`，那么当一个线程触发`d.wait`时，其必须有`d`的内在锁（否则会报错）。而在一个synchronized方法中触发`wait`是获取内在锁的一个简便方法。
+
+当`wait`被调用时，这个线程释放内在锁并挂起。在之后，另一个线程可以获取这个锁并调用`Object.notifyAll`来告知所有等待该锁的线程。
+
+```java
+public synchronized notifyJoy() {
+	joy = true;
+	notifyAll();
+}
+```
+
+当第二线程释放锁后，第一个线程重新获取该锁并从挂起状态恢复。
+
+> There is a second notification method, `notify`, which wakes up a single thread. Because `notify` doesn't allow you to specify the thread that is woken up, it is useful only in massively parallel applications — that is, programs with a large number of threads, all doing similar chores(works). In such an application, you don't care which thread gets woken up.
+
