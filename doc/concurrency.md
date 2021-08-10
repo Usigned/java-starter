@@ -339,3 +339,109 @@ public synchronized notifyJoy() {
 
 > There is a second notification method, `notify`, which wakes up a single thread. Because `notify` doesn't allow you to specify the thread that is woken up, it is useful only in massively parallel applications — that is, programs with a large number of threads, all doing similar chores(works). In such an application, you don't care which thread gets woken up.
 
+# 不可变对象
+
+不可变对象在创建后变不可被改变。最大化依赖于不可变对象是创建简单，可靠代码的有效手段。
+
+在多线程中使用不可变对象可以避免许多麻烦。
+
+## 定义不可变对象的原则
+
+下列原则不一定需要严格遵守，但不遵守时需要恰当的理由
+
+1. 不提供`setter`方法
+2. 将所有属性定义为`final`和`private`
+3. 不允许子类覆盖方法
+   - 最简单的实现方式是将类设为`final`，更好的做法是将构造器设为私有，构造对象任务交给工厂方法。
+4. 如果某个属性指向可变对象，那么应该禁止这些对象改变
+   - 不提供可以修改这些对象的方法
+   - 不要将这些对象的引用传给外界。对于外界在构造时传入的可变对象引用不要储存--尽量将其拷贝存储。同样对于方法返回给外界的可变对象也进行拷贝后再返回。
+
+# High level Concurrency Objects
+
+上述低层api在java早起便已被支持，且足够用于某些基础的任务。但对于更复杂的任务，则需要一些更高层的的api。这对那些要榨干当今多线程，多核处理器性能的高并发应用来说尤为重要。
+
+下列是java5以后支持的一些高层并发api，大多数在`java.util.concurrent`包中。Java Collections Framework中也有支持并非的新型数据结构：
+
+- Lock对象
+- Executors：定义了启动和管理线程的高级api。其采用了`java.util.concurrent`中的线程池实现，适合管理大型应用。
+- 并非集合：使管理大型集合更容易，减少了对同步的需求。
+- 原子变量：有助于减少同步，内存一致性错误。
+- ThreadLocalRandom (>= JDK7)：为多线程提供了有效的伪随机实现。
+
+## Lock对象
+
+Synchronized代码实现依赖于内在锁--这是一种可以重复获取的锁，易用但有局限性。`java.util.concurrent.locks`提供更强大的锁实现，`Lock`是其中一基础的接口。
+
+`Lock`对象和内在锁很像：同一时间只能有一个线程拥有`Lock`对象，且通过与其关联的`Condition`对象来支持`wait/notify`机制。
+
+`Lock`相较于内在锁的优势在于：`Lock`可以取消获取锁的请求（而synchronized则会一直阻塞）。`tryLock`可以在锁不可用或是超时时回退。`lockInterruputibly`在获取锁过程中被其他线程打断时回退。
+
+`Lock`可用于解决[死锁问题](#死锁)
+
+> 不得不说官网文档里的那个鞠躬例子是真的绕，自己改下打印输出会好理解很多
+
+| Lock                           | 内在锁                                           |
+| ------------------------------ | ------------------------------------------------ |
+| 请求不到资源时可以选择放弃请求 | 请求不到资源会一直阻塞                           |
+| 通过自己建`Lock`来实现         | 有`synchronized`, `volatile`等关键字可以直接使用 |
+
+# Executors
+
+之前例子中`Runnale`(线程承担的任务)和`Thread`本身联系很紧密，在大型系统中需要将线程创建/管理和应用的其他部分拆开。有这样功能的对象叫做`executors`。
+
+- Executor interface
+- Thread pools：最常见的executor实现
+- Fork/Join：为多处理器设计的框架(JDK 7)
+
+## Executor Interface
+
+`java.util.concurrent`中有3个executor接口
+
+- `Executor`：最简单，支持启动新任务
+- `ExecutorService`：`Executor`的子接口，添加了管理任务和executor本身生命周期的功能
+- `ScheduledExecutorService`：`ExecutorService`的子接口，支持定时或周期性的执行任务
+
+通常变量类型会被声明为上述接口中的一个，而不是具体的executor类（实现）
+
+### Executor
+
+仅含一个方法`execute`，是为了能直接代替创建线程语句而设计的：如执行一个`Runnable`接口，`e`是一个`Executor`对象，那么你可以将原本创建线程的代码
+
+```java
+(new Thread(r)).start(),
+```
+
+替换为
+
+```java
+e.execute(r);
+```
+
+但是`execute`如何执行比较依赖于具体实现，有可能`execute`会和原本一样创建一个新线程来执行，或是使用一个已有的worker线程去执行，亦或是将`r`放入一个等待队列中，等有worker空闲后载执行。
+
+`java.util.concurrent`中的实现都是服务于`ExecutorService`和`ScheduledExecutorService`来提供比较完善、高阶的功能，但也可以用于单纯的`Executor`接口。
+
+### ExecutorService
+
+`execute`方法和`Executor`类似，但还有一个更灵活的`submit`方法
+
+`submit`可以接受`Runnable`对象，也可以接受`Callable`对象
+
+> [Callable (Java Platform SE 8 ) (oracle.com)](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Callable.html)
+>
+> The `Callable` interface is similar to [`Runnable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html), in that both are designed for classes whose instances are potentially executed by another thread. A `Runnable`, however, does not return a result and cannot throw a checked exception.
+
+> `Callable`对象和`Runnable`类似，都是用于线程执行。但是`Callable`可以有返回值且可以抛出异常，但是`Runnable`不行
+
+`submit`会返回一个`Future`对象用于提取`Callable`的返回值和管理`Callable/Runnable`任务的状态。
+
+`ExecutorService`也提供了用于提交大型`Callable`对象集合的方法。
+
+`ExecutorService`提供了一些用于关闭`executor`的方法，为了支持立即关闭，任务们`(Callable/Runnable)`应该具备正确处理`interrupts`的能力。
+
+### ScheduledExecutorService
+
+在父接口基础上添加了`schedule`方法，其能够支持在一段时延后执行`Runnable/Callable`任务。
+
+另外接口还定义了`scheduledAtFixedRate/scheduleWithFixedDelay`，能够在特定的间隔下重复执行任务。

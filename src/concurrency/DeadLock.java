@@ -1,7 +1,12 @@
 package concurrency;
 
 public class DeadLock {
-    record Friend(String name) {
+    static class Friend {
+        private final String name;
+
+        public Friend(String name) {
+            this.name = name;
+        }
 
         public String getName() {
             return name;
