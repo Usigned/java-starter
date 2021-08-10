@@ -394,7 +394,7 @@ Synchronized代码实现依赖于内在锁--这是一种可以重复获取的锁
 - Thread pools：最常见的executor实现
 - Fork/Join：为多处理器设计的框架(JDK 7)
 
-## Executor Interface
+## Executor接口
 
 `java.util.concurrent`中有3个executor接口
 
@@ -445,3 +445,60 @@ e.execute(r);
 在父接口基础上添加了`schedule`方法，其能够支持在一段时延后执行`Runnable/Callable`任务。
 
 另外接口还定义了`scheduledAtFixedRate/scheduleWithFixedDelay`，能够在特定的间隔下重复执行任务。
+
+## 线程池(Thread Pools)
+
+`java.util.concurrent`中大多数executor实现都是基于线程池的，线程池由worker线程组成。这类线程本身的存在和其执行的`Runnable/Callable`任务是分开的，而且多数情况下一个worker线程会被用来执行多个任务。
+
+使用worker线程可以减少创建线程的开销。线程对象会占用较多的内存资源，而且在大型系统中如果存在过多的线程，那么管理这些线程的内存开销也会很大。
+
+一种常见的线程池类型是`fixed thread pool`， 这类线程池中：
+
+- 永远只有特定数量的线程在运行
+- 如果某个线程在使用过程中处于某些原因被中止了，那么一个新线程会被自动创建来代替它
+- 任务通过外部的队列输送到线程池中，若线程池已满（任务大于worker数），其余任务会在队列中等待
+
+固定线程数的线程池的一个优势是对应用程序很友好，即使在某时刻外界的任务请求激增，系统也不会创建过多的线程而导致崩溃，而是可以有效的降解、消化这些请求。
+
+> An important advantage of the fixed thread pool is that applications using it *degrade gracefully*.
+
+`java.util.concurrent.Executors`中提供了一个工厂方法`newFixedThreadPool`可以很方便的创建固定线程数目的线程池。除此之外，其还提供了其他工厂方法：
+
+- `newCachedThreadPool`：创建一个具有可扩展线程池的executor，其适用于可能会启动很多生命周期较短任务的应用程序。
+- `newSingleThreadExecutor`：一次只能执行一个线程的executor
+- 一些上述工厂方法的`ScheduledExecutorService`版本
+
+如果有特别需求，可以自己创建`java.util.concurrent.ThreadPoolExecutor/java.util.concurrent.ScheduledThreadExecutor`
+
+## Fork/Join
+
+fork/join框架是一个适用于多处理器的，`ExecutorService`接口的实现。其是为那些可递归拆分为更小任务而设计的。
+
+其功能和其余`ExecutorService`一样能把任务分配给线程池中的worker。但其特殊之处在于，其中的线程在自己任务执行完毕后，可以从其他任务还没执行完的线程中“偷”任务（*work-steal*算法）。
+
+>  The fork/join framework is distinct because it uses a *work-stealing* algorithm.
+
+这个框架核心部分位于`ForkJoinPool`类中，这是一个`AbstractExecutorService`的扩展类，实现了核心的*work-steal*算法和可以执行`ForkJoinTask`
+
+**基本使用**
+
+第一步是将任务分块，伪代码如下
+
+```
+if (my portion of the work is small enough):
+	do the work directly
+else
+	split my work into pieces
+	invoke each pieces and wait for results
+```
+
+将这些代码放入一个`ForkJoinTask`的子类中，通常可以使用`RecursiveTask`或`RecursiveAction`。
+
+当`ForkJoinTask`准备完毕后，创建一个代表所有工作都完成的标志并将其传给`ForkJoinPool`对象的`invoke`方法。
+
+**标准实现**
+
+java 8中已经有一些使用`fork/join`框架的实现，如`java.util.Arrays`中的`parallelSort()`方法，其和`sort()`类似，但采用了fork/join框架具有并发性，在多处理器系统中会比线性排序处理大型数组更快。
+
+`java.util.streams`中也有一些实现，如`parallelStream`等。
+
