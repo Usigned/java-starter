@@ -386,7 +386,7 @@ Synchronized代码实现依赖于内在锁--这是一种可以重复获取的锁
 | 请求不到资源时可以选择放弃请求 | 请求不到资源会一直阻塞                           |
 | 通过自己建`Lock`来实现         | 有`synchronized`, `volatile`等关键字可以直接使用 |
 
-# Executors
+## Executors
 
 之前例子中`Runnale`(线程承担的任务)和`Thread`本身联系很紧密，在大型系统中需要将线程创建/管理和应用的其他部分拆开。有这样功能的对象叫做`executors`。
 
@@ -394,7 +394,7 @@ Synchronized代码实现依赖于内在锁--这是一种可以重复获取的锁
 - Thread pools：最常见的executor实现
 - Fork/Join：为多处理器设计的框架(JDK 7)
 
-## Executor接口
+### Executor接口
 
 `java.util.concurrent`中有3个executor接口
 
@@ -404,7 +404,7 @@ Synchronized代码实现依赖于内在锁--这是一种可以重复获取的锁
 
 通常变量类型会被声明为上述接口中的一个，而不是具体的executor类（实现）
 
-### Executor
+#### Executor
 
 仅含一个方法`execute`，是为了能直接代替创建线程语句而设计的：如执行一个`Runnable`接口，`e`是一个`Executor`对象，那么你可以将原本创建线程的代码
 
@@ -422,7 +422,7 @@ e.execute(r);
 
 `java.util.concurrent`中的实现都是服务于`ExecutorService`和`ScheduledExecutorService`来提供比较完善、高阶的功能，但也可以用于单纯的`Executor`接口。
 
-### ExecutorService
+#### ExecutorService
 
 `execute`方法和`Executor`类似，但还有一个更灵活的`submit`方法
 
@@ -440,13 +440,13 @@ e.execute(r);
 
 `ExecutorService`提供了一些用于关闭`executor`的方法，为了支持立即关闭，任务们`(Callable/Runnable)`应该具备正确处理`interrupts`的能力。
 
-### ScheduledExecutorService
+#### ScheduledExecutorService
 
 在父接口基础上添加了`schedule`方法，其能够支持在一段时延后执行`Runnable/Callable`任务。
 
 另外接口还定义了`scheduledAtFixedRate/scheduleWithFixedDelay`，能够在特定的间隔下重复执行任务。
 
-## 线程池(Thread Pools)
+### 线程池(Thread Pools)
 
 `java.util.concurrent`中大多数executor实现都是基于线程池的，线程池由worker线程组成。这类线程本身的存在和其执行的`Runnable/Callable`任务是分开的，而且多数情况下一个worker线程会被用来执行多个任务。
 
@@ -470,7 +470,7 @@ e.execute(r);
 
 如果有特别需求，可以自己创建`java.util.concurrent.ThreadPoolExecutor/java.util.concurrent.ScheduledThreadExecutor`
 
-## Fork/Join
+### Fork/Join
 
 fork/join框架是一个适用于多处理器的，`ExecutorService`接口的实现。其是为那些可递归拆分为更小任务而设计的。
 
@@ -501,4 +501,14 @@ else
 java 8中已经有一些使用`fork/join`框架的实现，如`java.util.Arrays`中的`parallelSort()`方法，其和`sort()`类似，但采用了fork/join框架具有并发性，在多处理器系统中会比线性排序处理大型数组更快。
 
 `java.util.streams`中也有一些实现，如`parallelStream`等。
+
+## 并发集合
+
+`java.util.concurrent`中提供了一些Java Collections Framework中的一些实现
+
+- `BlockingQueue`：一个队列类型，当有操作向满的队列中添加元素或者从空队列中取元素时会阻塞或等待一段时间后超时
+- `ConcurrentMap`
+- [`ConcurrentNavigableMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentNavigableMap.html)
+
+使用上述集合可以避免内存一致性错误，它们会自动建立添加、删除操作之间的`happens-before`关系
 
