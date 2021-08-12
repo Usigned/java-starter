@@ -16,7 +16,7 @@ public class Consumer implements Runnable {
         try {
             for (String message = queue.take(); !message.equals("DONE"); message = queue.take()) {
                 System.out.println(message);
-                Thread.sleep(1000);
+                Thread.sleep(random.nextInt(5000));
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

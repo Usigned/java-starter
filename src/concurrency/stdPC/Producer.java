@@ -16,16 +16,10 @@ public class Producer implements Runnable {
                 "info 2",
                 "info 3"
         };
-
-        for (String info : infos) {
-            try {
-                queue.put(info);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
         try {
+            for (String info : infos) {
+                queue.put(info);
+            }
             queue.put("DONE");
         } catch (InterruptedException e) {
             e.printStackTrace();
