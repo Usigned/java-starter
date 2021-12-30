@@ -113,7 +113,6 @@ class Rational extends Value {
     }
     Value add(Int other) {
         return other.add(this);	// reuse computation of commutative operation
-
     }
     Value add(MyString other) {
         return new MyString(other.s + i + "/" + j);
